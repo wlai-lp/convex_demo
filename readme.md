@@ -35,7 +35,7 @@ use this to import data and create table tasks
 npx convex import --table tasks sampleData.jsonl
 ```
 
-# create db quesry
+# create db query
 Expose a database query
 Add a new file tasks.js in the convex/ folder with a query function that loads the data.
 
@@ -50,6 +50,9 @@ export const get = query({
   },
 });
 ```
+
+# npx convex dev
+- once you run the local convex dev server, it automatically sync your local node project changes  - amazing
 
 # CONVEX_URL
 i believe the `npx convex dev` commend creates it and saves it to your .env.local
