@@ -1,6 +1,6 @@
 # Note
 this setup is to have a sdk setup to create convex function
-whish is a wocket connecting that gets updated in real time
+which is a websocket connecting that gets updated in real time
 
 this sets up your local develop to start creating convex functions
 this is what i think how it works

@@ -6,6 +6,7 @@ import { v } from "convex/values";
 export const get = query({
   args: {},
   handler: async (ctx) => {
+    let i = 1;
     return await ctx.db.query("tasks").collect();
   },
 });
