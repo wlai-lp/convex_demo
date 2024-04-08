@@ -56,3 +56,23 @@ export const get = query({
 
 # CONVEX_URL
 i believe the `npx convex dev` commend creates it and saves it to your .env.local
+
+# Syntax
+in convex/messaging.ts
+``` 
+export const sendReq = mutation(async (ctx, { body, author }) => {
+    // const message = { body, author };
+    await ctx.db.insert("messages", { body, author });
+  });
+```
+in script.ts
+```
+const client = new ConvexHttpClient(process.env["CONVEX_URL"]!);
+
+client.query(api.tasks.get).then(console.log);
+
+client.mutation(api.messages.sendReq, {
+    author: "weidogg1001",
+    body: 'jsondata',
+  });
+```

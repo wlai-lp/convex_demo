@@ -1,0 +1,87 @@
+// "use node";
+
+import { action, internalAction, mutation } from "./_generated/server";
+import { internal } from "./_generated/api";
+import { v } from "convex/values";
+
+// import SomeNpmPackage from "some-npm-package";
+
+export const doSomething = action({
+  args: {},
+  handler: async (ctx, args) => {
+    // do something with SomeNpmPackage
+    const jsondata = await fetch(
+      "https://622b7f2314ccb950d23c2b04.mockapi.io/api/v1/OrderStatus"
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        // console.log('Data:', data);
+        console.log("Data fetched");
+        return JSON.stringify(data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+    console.log("convex actions");
+    // internal.myFunctions.
+    const data = await ctx.runMutation(internal.messages.sendOne, {
+      author: "weidogg",
+      body: jsondata,
+    });
+    console.log("added weidogg jsondata");
+  },
+});
+
+export const addTWData = action({
+  args: { month_param: v.string(), maven_key: v.string(), siteId: v.string() },
+  handler: async (ctx, args) => {
+    const apiUrl = `https://z1.context.liveperson.net/v1/account/${args.siteId}/reporting/${args.month_param}/properties` 
+    console.log(`url is ${apiUrl}`);
+    
+    const jsondata = await fetch(apiUrl, {
+        headers: {
+            'Content-Type': 'application/json',
+            'maven-api-key': `${args.maven_key}`
+        }
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        // console.log('Data:', data);
+        console.log("Data fetched");
+        return JSON.stringify(data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+
+      // insert data to the message table
+    const data = await ctx.runMutation(internal.messages.sendOne, {
+        author: args.month_param,
+        body: jsondata,
+      });
+
+    console.log("pw insert done");
+  },
+});
+
+// Create a new task with the given text
+export const createTask = mutation({
+  args: { text: v.string() },
+  handler: async (ctx, args) => {
+    const newTaskId = await ctx.db.insert("messages", {
+      author: args.text,
+      body: "body",
+    });
+    return newTaskId;
+  },
+});
